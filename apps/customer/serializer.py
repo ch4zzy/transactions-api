@@ -7,6 +7,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     """
     Serializer for the Profile model.
     """
+
     class Meta:
         model = Profile
         fields = ["user", "balance"]
