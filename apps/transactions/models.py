@@ -7,6 +7,10 @@ from apps.transactions.constants import Type
 
 
 class Transactions(models.Model):
+    """
+    Model representing a transaction
+    """
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     transaction_type = models.CharField(choices=Type.choices, max_length=10)
     transaction_id = models.IntegerField(null=True)
