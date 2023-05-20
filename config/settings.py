@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "silk",
     "apps.customer",
+    "apps.transactions",
 ]
 
 MIDDLEWARE = [
