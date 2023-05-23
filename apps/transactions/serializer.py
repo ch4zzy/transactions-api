@@ -18,7 +18,7 @@ class BaseSerializer(serializers.ModelSerializer):
 
     def validate_user(self, value):
         """
-        Validate the user associated with the transaction.
+        Validate the user associated  with the transaction.
         """
         if not User.objects.filter(id=value).exists():
             if settings.DEBUG:
@@ -27,6 +27,10 @@ class BaseSerializer(serializers.ModelSerializer):
 
 
 class TransactionsListSerializer(serializers.ModelSerializer):
+    """
+    Serializer for listing transactions. 
+    """
+
     transaction_type = serializers.SerializerMethodField()
 
     class Meta:
@@ -42,10 +46,17 @@ class TransactionsListSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_transaction_type(obj):
+        """
+        Get the display value of the transaction type.
+        """
         return obj.get_kind_display()
 
 
 class TransactionsSerializer(BaseSerializer):
+    """
+    Serializer for creating transactions.
+    """
+
     user_id = serializers.IntegerField()
     transaction_id = serializers.IntegerField()
     date = serializers.DateTimeField(default=datetime.now)
@@ -56,6 +67,9 @@ class TransactionsSerializer(BaseSerializer):
         fields = ("user_id", "transaction_id", "date", "amount")
 
     def create(self, validated_data):
+        """
+        Create a new transaction.
+        """
         user = User.objects.get(id=validated_data["user_id"])
 
         if validated_data["amount"] > 0:
@@ -88,7 +102,9 @@ class TransactionsSerializer(BaseSerializer):
 
 
 class WithdrawalsSerializer(BaseSerializer):
-    """ """
+    """
+    Serializer for creating withdrawal transactions.
+    """
 
     user_id = serializers.IntegerField()
     amount = serializers.DecimalField(max_digits=10, decimal_places=2)
@@ -99,6 +115,9 @@ class WithdrawalsSerializer(BaseSerializer):
         fields = ("user_id", "amount", "date")
 
     def create(self, validated_data):
+        """
+        Create a new withdrawal transaction.
+        """
         user = User.objects.get(id=validated_data["user_id"])
         transaction_type = Type.WITHDRAWAL
         amount = validated_data["amount"]
