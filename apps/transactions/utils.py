@@ -1,5 +1,3 @@
-from typing import Dict
-
 from apps.transactions.models import Transactions
 
 
